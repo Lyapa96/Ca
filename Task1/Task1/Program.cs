@@ -18,6 +18,12 @@ namespace Task1
             var size = parameters.CountOfVertices;
             var graph = parameters.Graph;
 
+            foreach (var node in graph.Values)
+            {
+                Console.WriteLine(node.Location);
+                //Console.WriteLine(node.ToString());
+            }
+
             var weightMatrix = new int[size,size];
             for (int x = 0; x < size; x++)
             {
@@ -36,6 +42,14 @@ namespace Task1
                 }
             }
 
+            for (int x = 0; x < size; x++)
+            {
+                for (int y = 0; y < size; y++)
+                {
+                    Console.Write(weightMatrix[x, y]+"   ");
+                }
+                Console.WriteLine();
+            }
 
             var weight = GetWeight(graph, weightMatrix);
             using (var sw = new StreamWriter("out.txt")) 
@@ -54,7 +68,7 @@ namespace Task1
             List<Node> tree = new List<Node>();
             tree.Add(graph[0]);
             var weight = 0;
-            while (tree.Count != graph.Count)
+            while (tree.Count < graph.Count)
             {
                 var minEdge = new MinEdge(int.MaxValue);
                 
@@ -63,7 +77,7 @@ namespace Task1
                     var currentNodeNumber = node.Number;
                     for (int i = 0; i < weightMatrix.GetLength(0); i++)
                     {
-                        if (weightMatrix[currentNodeNumber,i] < minEdge.Weight)
+                        if (weightMatrix[currentNodeNumber,i] < minEdge.Weight && !tree.Contains(graph[i]))
                         {
                             minEdge.Weight = weightMatrix[currentNodeNumber,i];
                             minEdge.FromNode = currentNodeNumber;
